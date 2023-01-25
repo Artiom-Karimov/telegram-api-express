@@ -7,13 +7,18 @@ import * as express from 'express';
 import { AppController } from './app/app-controller';
 import { config } from './common/config';
 import { Logger } from './interfaces/logger';
+import { TelegramController } from './telegram/telegram-controller';
 
 @injectable()
 export class App {
   public readonly port: number;
   public readonly server: Server;
 
-  constructor(private readonly logger: Logger, appController: AppController) {
+  constructor(
+    private readonly logger: Logger,
+    appController: AppController,
+    telegramController: TelegramController,
+  ) {
     this.port = config.port;
 
     const app = express();
@@ -25,6 +30,7 @@ export class App {
     app.use(cookieParser());
 
     app.use('/', appController.getRouter());
+    app.use('/telegram', telegramController.getRouter());
   }
 
   public start() {
