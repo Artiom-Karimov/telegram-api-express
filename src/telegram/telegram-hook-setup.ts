@@ -25,7 +25,7 @@ export class TelegramHookSetup {
 
   public async deleteHook() {
     const result = await axios.post(
-      `https://api.telegram.org/bot${config.telegramToken}/deleteWebhook`,
+      `${config.telegramBaseUrl}/bot${config.telegramToken}/deleteWebhook`,
       {},
     );
 
@@ -40,7 +40,7 @@ export class TelegramHookSetup {
     };
 
     const result = await axios.post(
-      `https://api.telegram.org/bot${config.telegramToken}/setWebhook`,
+      `${config.telegramBaseUrl}/bot${config.telegramToken}/setWebhook`,
       data,
     );
 
