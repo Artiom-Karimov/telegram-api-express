@@ -9,6 +9,7 @@ import { TelegramController } from './telegram/telegram-controller';
 import { TelegramService } from './telegram/telegram-service';
 import { TelegramHookSetup } from './telegram/telegram-hook-setup';
 import { TelegramSender } from './telegram/telegram-sender';
+import { CommandProcessor } from './telegram/command-processor';
 
 export class CompositionRoot {
   private readonly container = new Container({ defaultScope: 'Singleton' });
@@ -24,6 +25,7 @@ export class CompositionRoot {
     this.container.bind<TelegramService>(TelegramService).toSelf();
     this.container.bind<TelegramHookSetup>(TelegramHookSetup).toSelf();
     this.container.bind<TelegramSender>(TelegramSender).toSelf();
+    this.container.bind<CommandProcessor>(CommandProcessor).toSelf();
 
     this.container.bind<App>(App).toSelf();
   }

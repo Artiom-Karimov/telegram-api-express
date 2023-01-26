@@ -16,7 +16,7 @@ export class TelegramSender {
     return this.send(msg);
   }
 
-  protected async send(msg: SendMessage): Promise<void> {
+  public async send(msg: SendMessage): Promise<void> {
     const result = await axios.post(
       `${config.telegramBaseUrl}/bot${config.telegramToken}/sendMessage`,
       msg,
