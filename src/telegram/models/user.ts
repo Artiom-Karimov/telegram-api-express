@@ -1,4 +1,4 @@
-export type UserType = {
+export type User = {
   id: number;
   is_bot: boolean;
   first_name: string;

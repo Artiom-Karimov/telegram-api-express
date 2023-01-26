@@ -14,7 +14,7 @@ export type UpdateType =
   | 'chat_member'
   | 'chat_join_request';
 
-export type SetWebhookType = {
+export type SetWebhookModel = {
   url?: string;
   certificate?: string;
   ip_address?: string;

@@ -5,7 +5,7 @@ import { Logger } from '../interfaces/logger';
 import { config } from '../common/config';
 import axios from 'axios';
 import { v4 as uuid } from 'uuid';
-import { SetWebhookType } from './models/set-webhook-type';
+import { SetWebhookModel } from './models/set-webhook-model';
 
 @injectable()
 export class TelegramHookSetup {
@@ -34,7 +34,7 @@ export class TelegramHookSetup {
   }
 
   private async setHook(baseUrl: string) {
-    const data: SetWebhookType = {
+    const data: SetWebhookModel = {
       url: `${baseUrl}/telegram/hook`,
       secret_token: this.token,
     };
