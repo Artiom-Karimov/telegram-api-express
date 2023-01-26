@@ -490,18 +490,186 @@ export type PassportData = {
   credentials: EncryptedCredentials;
 };
 
-// At this point I've lost my patience, sorry :(
-export type EncryptedPassportElement = {};
-export type EncryptedCredentials = {};
-export type ProximityAlertTriggered = {};
-export type ForumTopicCreated = {};
-export type ForumTopicEdited = {};
+/** Describes documents or other Telegram Passport elements shared with the bot
+ * by the user. */
+export type EncryptedPassportElement = {
+  /** Element type. One of “personal_details”, “passport”, “driver_license”,
+   * “identity_card”, “internal_passport”, “address”, “utility_bill”,
+   * “bank_statement”, “rental_agreement”, “passport_registration”,
+   * “temporary_registration”, “phone_number”, “email”. */
+  type: string;
+
+  /** Optional. Base64-encoded encrypted Telegram Passport element data
+   * provided by the user, available for “personal_details”, “passport”,
+   * “driver_license”, “identity_card”, “internal_passport” and “address”
+   * types. Can be decrypted and verified using the accompanying
+   * EncryptedCredentials. */
+  data?: string;
+
+  /** Optional. User's verified phone number, available only for
+   * “phone_number” type */
+  phone_number?: string;
+
+  /** Optional. User's verified email address, available only for “email”
+   * type */
+  email?: string;
+
+  /** Optional. Array of encrypted files with documents provided by the user,
+   *  available for “utility_bill”, “bank_statement”, “rental_agreement”,
+   *  “passport_registration” and “temporary_registration” types. Files can be
+   * decrypted and verified using the accompanying EncryptedCredentials. */
+  files?: PassportFile[];
+
+  /** Optional. Encrypted file with the front side of the document, provided
+   * by the user. Available for “passport”, “driver_license”, “identity_card”
+   * and “internal_passport”. The file can be decrypted and verified using the
+   * accompanying EncryptedCredentials. */
+  front_side?: PassportFile;
+
+  /** Optional. Encrypted file with the reverse side of the document, provided
+   * by the user. Available for “driver_license” and “identity_card”. The file
+   * can be decrypted and verified using the accompanying
+   * EncryptedCredentials. */
+  reverse_side?: PassportFile;
+
+  /** Optional. Encrypted file with the selfie of the user holding a document,
+   * provided by the user; available for “passport”, “driver_license”,
+   * “identity_card” and “internal_passport”. The file can be decrypted and
+   * verified using the accompanying EncryptedCredentials. */
+  selfie?: PassportFile;
+
+  /** Optional. Array of encrypted files with translated versions of documents
+   * provided by the user. Available if requested for “passport”,
+   * “driver_license”, “identity_card”, “internal_passport”, “utility_bill”,
+   * “bank_statement”, “rental_agreement”, “passport_registration” and
+   * “temporary_registration” types. Files can be decrypted and verified using
+   * the accompanying EncryptedCredentials. */
+  translation?: PassportFile[];
+
+  /** Base64-encoded element hash for using in PassportElementErrorUnspecified */
+  hash: string;
+};
+
+/** This object represents a file uploaded to Telegram Passport. Currently all
+ * Telegram Passport files are in JPEG format when decrypted and don't exceed
+ * 10MB. */
+export type PassportFile = {
+  /** Identifier for this file, which can be used to download or reuse the
+   * file */
+  file_id: string;
+
+  /** Unique identifier for this file, which is supposed to be the same over
+   * time and for different bots. Can't be used to download or reuse the file. */
+  file_unique_id: string;
+
+  /** File size in bytes */
+  file_size: number;
+
+  /** Unix time when the file was uploaded */
+  file_date: number;
+};
+
+/** Describes data required for decrypting and authenticating
+ * EncryptedPassportElement. See the Telegram Passport Documentation for a
+ * complete description of the data decryption and authentication processes. */
+export type EncryptedCredentials = {
+  /** Base64-encoded encrypted JSON-serialized data with unique user's payload,
+   * data hashes and secrets required for EncryptedPassportElement decryption
+   * and authentication */
+  data: string;
+
+  /** Base64-encoded data hash for data authentication */
+  hash: string;
+
+  /** Base64-encoded secret, encrypted with the bot's public RSA key, required
+   * for data decryption */
+  secret: string;
+};
+
+/** This object represents the content of a service message, sent whenever a
+ * user in the chat triggers a proximity alert set by another user. */
+export type ProximityAlertTriggered = {
+  /** User that triggered the alert */
+  traveler: User;
+
+  /** User that set the alert */
+  watcher: User;
+
+  /** The distance between the users */
+  distance: number;
+};
+
+/** This object represents a service message about a new forum topic created
+ * in the chat. */
+export type ForumTopicCreated = {
+  /** Name of the topic */
+  name: string;
+
+  /** Color of the topic icon in RGB format */
+  icon_color: number;
+
+  /** Optional. Unique identifier of the custom emoji shown as the topic icon */
+  icon_custom_emoji_id?: string;
+};
+
+/** This object represents a service message about an edited forum topic. */
+export type ForumTopicEdited = {
+  /** Optional. New name of the topic, if it was edited */
+  name?: string;
+
+  /** Optional. New identifier of the custom emoji shown as the topic icon,
+   * if it was edited; an empty string if the icon was removed */
+  icon_custom_emoji_id?: string;
+};
+
+/** This object represents a service message about a forum topic closed in
+ * the chat. Currently holds no information. */
 export type ForumTopicClosed = {};
+
+/** This object represents a service message about a forum topic reopened in
+ * the chat. Currently holds no information. */
 export type ForumTopicReopened = {};
+
+/** This object represents a service message about General forum topic hidden
+ * in the chat. Currently holds no information. */
 export type GeneralForumTopicHidden = {};
+
+/** This object represents a service message about General forum topic
+ * unhidden in the chat. Currently holds no information. */
 export type GeneralForumTopicUnhidden = {};
-export type VideoChatScheduled = {};
+
+/** This object represents a service message about a video chat scheduled in
+ * the chat. */
+export type VideoChatScheduled = {
+  /** Point in time (Unix timestamp) when the video chat is supposed to be
+   * started by a chat administrator */
+  start_date: number;
+};
+
+/** This object represents a service message about a video chat started in
+ * the chat. Currently holds no information. */
 export type VideoChatStarted = {};
-export type VideoChatEnded = {};
-export type VideoChatParticipantsInvited = {};
-export type WebAppData = {};
+
+/** This object represents a service message about a video chat ended in
+ * the chat. */
+export type VideoChatEnded = {
+  /** Video chat duration in seconds */
+  duration: number;
+};
+
+/** This object represents a service message about new members invited to a
+ * video chat. */
+export type VideoChatParticipantsInvited = {
+  users: User[];
+};
+
+/** Describes data sent from a Web App to the bot. */
+export type WebAppData = {
+  /** The data. Be aware that a bad client can send arbitrary data in this
+   * field. */
+  data: string;
+
+  /** Text of the web_app keyboard button from which the Web App was opened.
+   * Be aware that a bad client can send arbitrary data in this field. */
+  button_text: string;
+};
