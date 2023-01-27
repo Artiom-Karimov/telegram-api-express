@@ -19,7 +19,7 @@
 <p>The bot connects to <a href="https://core.telegram.org/bots/api">Telegram API</a> using webhook.</p> 
 <p>You should register your bot using @BotFather, 
 <br>then copy generated API token into TELEGRAM_TOKEN environment variable.</p>
-<p>When NODE_ENV is set to "development", it uses <a href="https://www.npmjs.com/package/ngrok">Ngrok</a> to create a hook.</p>
-<p>If you don't need it, set NODE_ENV to "production".
-<br><strong>Note:</strong> you will need to set BASE_URL variable to your host (https://example.com)</p>
+<p>When BASE_URL env variable is not set, it uses <a href="https://www.npmjs.com/package/ngrok">Ngrok</a> to create a hook.</p>
+<p>If you don't need it, set BASE_URL to your host (https://example.com).
+<br><strong>Note:</strong> It should use https. Telegram supports only common http ports (80, 8080, 443) </p>
 

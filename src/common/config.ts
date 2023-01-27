@@ -4,7 +4,7 @@ const trustProxy = process.env.TRUST_PROXY === 'true' || false;
 const telegramBaseUrl =
   process.env.TELEGRAM_BASE_URL || 'https://api.telegram.org';
 const telegramToken = process.env.TELEGRAM_TOKEN;
-const baseUrl = process.env.BASE_URL || `http://localhost:${port}`;
+const baseUrl = process.env.BASE_URL;
 
 export const config = {
   port,

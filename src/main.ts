@@ -12,10 +12,10 @@ const run = async () => {
 
   const setup = root.getHookSetup();
 
-  if (process.env.NODE_ENV === 'development') {
-    await setup.setupDevelopment();
-  } else {
+  if (process.env.BASE_URL) {
     await setup.setupProduction();
+  } else {
+    await setup.setupDevelopment();
   }
 };
 
