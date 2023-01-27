@@ -1,6 +1,6 @@
 import 'reflect-metadata';
 import { injectable } from 'inversify';
-import { connect } from 'ngrok';
+import { connect, disconnect } from 'ngrok';
 import { Logger } from '../interfaces/logger';
 import { config } from '../common/config';
 import axios from 'axios';
@@ -14,20 +14,28 @@ export class TelegramHookSetup {
    * Token is being sent to telegram on hook setup.
    * On message this token is included in headers, so you can be sure that
    * only telegram updates will be processed */
-  public readonly token = uuid();
+  private _token: string;
+
+  /** You should check  x-telegram-bot-api-secret-token header
+   * when receiving updates from telegram. Values should be equal
+   */
+  get token() {
+    return this._token;
+  }
 
   constructor(private readonly logger: Logger) { }
 
-  public async setupDevelopment() {
-    const url = await connect(config.port);
-    this.logger.log(`ngrok connected to ${url}`);
-    return this.setHook(url);
+  /** Set or reset webhook for telegram API.
+   * If env.BASE_URL is present, it will be used, otherwise
+   * the hook will be connected through Ngrok.
+   */
+  public async setHook() {
+    this._token = uuid();
+    if (config.baseUrl) return this.setupProduction();
+    return this.setupDevelopment();
   }
 
-  public async setupProduction() {
-    return this.setHook(config.baseUrl);
-  }
-
+  /** Hook will be removed, you will be able to receive updates by polling */
   public async deleteHook() {
     const result = await axios.post(
       `${config.telegramBaseUrl}/bot${config.telegramToken}/deleteWebhook`,
@@ -38,7 +46,18 @@ export class TelegramHookSetup {
     this.logger.log(`telegram response:\n${JSON.stringify(result.data)}`);
   }
 
-  private async setHook(baseUrl: string) {
+  private async setupDevelopment() {
+    await disconnect();
+    const url = await connect(config.port);
+    this.logger.log(`ngrok connected to ${url}`);
+    return this.sendHook(url);
+  }
+
+  private async setupProduction() {
+    return this.sendHook(config.baseUrl);
+  }
+
+  private async sendHook(baseUrl: string) {
     const data: SetWebhookModel = {
       url: `${baseUrl}/telegram/hook`,
       secret_token: this.token,

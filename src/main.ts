@@ -11,12 +11,7 @@ const run = async () => {
   app.start();
 
   const setup = root.getHookSetup();
-
-  if (process.env.BASE_URL) {
-    await setup.setupProduction();
-  } else {
-    await setup.setupDevelopment();
-  }
+  await setup.setHook();
 };
 
 run();
