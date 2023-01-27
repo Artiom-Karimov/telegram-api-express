@@ -1,4 +1,5 @@
 # Telegram bot using express
+### Test it: <a href="https://t.me/expressEchoBot">@expressEchoBot</a>
 ## Capabilities
 - On /start command it sends back menu of 2 buttons
 - It can flip a coin (heads/tails)
