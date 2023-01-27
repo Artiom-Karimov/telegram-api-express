@@ -9,6 +9,11 @@ import { SetWebhookModel } from './models/set-webhook-model';
 
 @injectable()
 export class TelegramHookSetup {
+  /** This uuid can be an issue if you decide to replicate your app.
+   * If this is a case, consider storing token in db or environment vars.
+   * Token is being sent to telegram on hook setup.
+   * On message this token is included in headers, so you can be sure that
+   * only telegram updates will be processed */
   public readonly token = uuid();
 
   constructor(private readonly logger: Logger) { }
